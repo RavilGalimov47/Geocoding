@@ -12,10 +12,14 @@ class SimpleTreeGeocoder(Geocoder):
             self.__data = data
 
     def _apply_geocoding(self, area_id: str) -> str:
-        """
-            TODO:
-            - Сделать перебор дерева для каждого area_id
-            - В ходе перебора возвращать массив элементов, состоящих из TreeNode необходимой ветки
-            - Из массива TreeNode составить полный адрес
-        """
-        raise NotImplementedError()
+        area_id = str(area_id)  # думаю, что не суть, как эта строка реализована
+
+        for country in self.__data:
+            for area in country.areas:
+                for sity in area.areas:
+                    if sity.id == area_id:
+                        return f"{country.name} {area.name} {sity.name}"
+                if area.id == area_id:
+                    return f"{country.name} {area.name}"
+            if country.id == area_id:
+                return f"{country.name}"
